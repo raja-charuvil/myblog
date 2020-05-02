@@ -66,3 +66,11 @@ def update_blog(id):
 
 	db.session.add()
 	return jsonify({"blog_id": blog.id})
+
+@flask_app.route('/delete_blog/<int:id>', methods=["DELETE"])
+def delete_blog(id):
+	blog = Blog.query.filter_by(id=id).first()
+	db.session.delete(blog)
+	db.session.commit()
+
+	return jsonify({"Blog was deleted!"}), 200
