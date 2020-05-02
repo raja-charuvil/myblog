@@ -52,3 +52,17 @@ def get_single_blog(id):
 		serialized_blog["tags"].append(tag.serialize)
 
 	return jsonify({"single_blog": serialized_blog})
+
+@flask_app.route('/update_blog/<int:id>', methods=["PUT"])
+def update_blog(id):
+	data = request.get_json()
+	blog = Blog.query.filter_by(id=id).first_or_404()
+
+	blog.title = data["title"]
+	blog.content = data["content"]
+	blog.feature_image = data["feature_image"]
+
+	updated_blog = blog.serialize
+
+	db.session.add()
+	return jsonify({"blog_id": blog.id})
