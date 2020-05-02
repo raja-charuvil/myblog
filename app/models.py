@@ -47,3 +47,11 @@ class Tag(db.Model):
 	def __repr__(self):
 		return '<Tag {}>'.format(self.name)
 	
+
+class User(db.model):
+	id = db.Column(db.Integer, primary_key=True)
+	email = db.Column(db.String(120), nullable=False)
+	password = db.Column(db.String(120), nullable=False)
+
+	def __repr__(self):
+		return '<User {}>'.format(self.email)
