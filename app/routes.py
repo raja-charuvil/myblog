@@ -32,3 +32,12 @@ def create_blog():
 
 	blog_id = getattr(new_blog)
 	return jsonify({"id": blog_id})
+
+@flask_app.route('/blogs', methods=["GET"])
+def get_all_blogs():
+	blogs = Blog.query.all()
+	serialized_data = []
+	for blog in blogs:
+		serialized_data.append(blog.serialize)
+
+	return jsonify({"all_blogs": serialized_data})
