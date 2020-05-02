@@ -41,3 +41,14 @@ def get_all_blogs():
 		serialized_data.append(blog.serialize)
 
 	return jsonify({"all_blogs": serialized_data})
+
+@flask_app.route('/blog/<int:id>', methods=["GET"])
+def get_single_blog(id):
+	blog = Blog.query.filter_by(id=id).first()
+	serialized_blog = blog.serialize
+	serialized_blog["tags"] = []
+
+	for tag in blog.tags:
+		serialized_blog["tags"].append(tag.serialize)
+
+	return jsonify({"single_blog": serialized_blog})
