@@ -19,6 +19,13 @@
             {% endfor %}
 		</p>
 		<p>
+			{{ form.tags.label }}<br>
+			{{ form.tags(size=64) }}
+			{% for error in form.tags.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+		</p>
+		<p>
 			{{ form.submit() }}
 		</p>
 	</form>

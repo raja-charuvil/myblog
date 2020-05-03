@@ -19,14 +19,16 @@ def create_blog():
 			title=form.title.data,
 			content=form.content.data)
 
-	# for tag in data["tags"]:
-	# 	present_tag = Tag.query.filter_by(name=tag).first()
-	# 	if (present_tag):
-	# 		present_tag.blogs_associated.append(new_blog)
-	# 	else:
-	# 		new_tag = Tag(name=tag)
-	# 		new_tag.blogs_associated.append(new_blog)
-	# 		db.session.add(new_tag)
+	if form.tags.data:
+		blog_tags = [x.strip() for x in form.tags.data.split(",")]
+		for tag in blog_tags:
+			present_tag = Tag.query.filter_by(name=tag).first()
+			if (present_tag):
+				present_tag.blogs_associated.append(new_blog)
+			else:
+				new_tag = Tag(name=tag)
+				new_tag.blogs_associated.append(new_blog)
+				db.session.add(new_tag)
 
 		db.session.add(new_blog)
 		db.session.commit()

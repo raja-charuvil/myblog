@@ -6,6 +6,13 @@
     <div>
        	<h3>{{ blog.title }}</h3>
         <p>{{ blog.content }}</p>
+        {% if blog.tags %}
+        <p>
+        	{% for tag in blog.tags %}
+        	<i>{{ tag.name }}</i>
+        	{% endfor %}
+        </p>
+        {% endif %}
     </div>
     {% endfor %}
 {% endblock %}
