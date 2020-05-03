@@ -1,3 +1,4 @@
+import mistune
 from flask import request, jsonify, render_template, redirect
 from app import flask_app, db
 from app.models import Blog, Tag
@@ -17,7 +18,7 @@ def create_blog():
 	if form.validate_on_submit():
 		new_blog = Blog(
 			title=form.title.data,
-			content=form.content.data)
+			content=mistune.html(form.content.data))
 
 	if form.tags.data:
 		blog_tags = [x.strip() for x in form.tags.data.split(",")]
