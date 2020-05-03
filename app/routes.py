@@ -1,47 +1,39 @@
-from flask import request, jsonify, render_template
-from app import flask_app
+from flask import request, jsonify, render_template, redirect
+from app import flask_app, db
 from app.models import Blog, Tag
+from app.forms import BlogForm
 
 
 @flask_app.route('/')
 @flask_app.route('/index')
 def index():
-	blogs = [
-        {
-            'title': 'Python for beginners',
-            'content': 'Python is very simple language'
-        },
-        {
-            'title': 'Scala',
-            'content': 'Scala is very smart language'
-        }
-    ]
+	blogs = Blog.query.all()
 	return render_template('index.html', title='Home', blogs=blogs)
 
 
-@flask_app.route('/add_blog', methods=["POST"])
+@flask_app.route('/add_blog', methods=["GET", "POST"])
 def create_blog():
-	data = request.get_json()
+	form = BlogForm()
+	if form.validate_on_submit():
+		new_blog = Blog(
+			title=form.title.data,
+			content=form.content.data)
 
-	new_blog = Blog(
-		title=data["title"],
-		content=data["content"],
-		feature_image=data["feature_image"])
+	# for tag in data["tags"]:
+	# 	present_tag = Tag.query.filter_by(name=tag).first()
+	# 	if (present_tag):
+	# 		present_tag.blogs_associated.append(new_blog)
+	# 	else:
+	# 		new_tag = Tag(name=tag)
+	# 		new_tag.blogs_associated.append(new_blog)
+	# 		db.session.add(new_tag)
 
-	for tag in data["tags"]:
-		present_tag = Tag.query.filter_by(name=tag).first()
-		if (present_tag):
-			present_tag.blogs_associated.append(new_blog)
-		else:
-			new_tag = Tag(name=tag)
-			new_tag.blogs_associated.append(new_blog)
-			db.session.add(new_tag)
+		db.session.add(new_blog)
+		db.session.commit()
 
-	db.session.add(new_blog)
-	db.session.commit()
+		return redirect('/index')
 
-	blog_id = getattr(new_blog)
-	return jsonify({"id": blog_id})
+	return render_template('add_blog.html', title='add blog', form=form)
 
 @flask_app.route('/blogs', methods=["GET"])
 def get_all_blogs():
