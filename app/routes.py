@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from app import flask_app
 from app.models import Blog, Tag
 
@@ -6,7 +6,17 @@ from app.models import Blog, Tag
 @flask_app.route('/')
 @flask_app.route('/index')
 def index():
-	return "Hello world!"
+	blogs = [
+        {
+            'title': 'Python for beginners',
+            'content': 'Python is very simple language'
+        },
+        {
+            'title': 'Scala',
+            'content': 'Scala is very smart language'
+        }
+    ]
+	return render_template('index.html', title='Home', blogs=blogs)
 
 
 @flask_app.route('/add_blog', methods=["POST"])
