@@ -1,5 +1,6 @@
-from app import db
+from app import db, login
 from datetime import datetime
+from flask_login import UserMixin
 
 
 tag_blog = db.Table(
@@ -48,10 +49,14 @@ class Tag(db.Model):
 		return '<Tag {}>'.format(self.name)
 	
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	email = db.Column(db.String(120), nullable=False)
 	password = db.Column(db.String(120), nullable=False)
 
 	def __repr__(self):
 		return '<User {}>'.format(self.email)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

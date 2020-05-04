@@ -1,8 +1,11 @@
 import mistune
-from flask import request, jsonify, render_template, redirect
+from flask import request, jsonify, render_template, redirect, \
+	url_for
+from werkzeug.security import check_password_hash
+from flask_login import login_required, login_user
 from app import flask_app, db
-from app.models import Blog, Tag
-from app.forms import BlogForm
+from app.models import Blog, Tag, User
+from app.forms import BlogForm, LoginForm
 
 
 @flask_app.route('/')
@@ -13,28 +16,29 @@ def index():
 
 
 @flask_app.route('/add_blog', methods=["GET", "POST"])
-def create_blog():
+@login_required
+def add_blog():
 	form = BlogForm()
 	if form.validate_on_submit():
 		new_blog = Blog(
 			title=form.title.data,
 			content=mistune.html(form.content.data))
 
-	if form.tags.data:
-		blog_tags = [x.strip() for x in form.tags.data.split(",")]
-		for tag in blog_tags:
-			present_tag = Tag.query.filter_by(name=tag).first()
-			if (present_tag):
-				present_tag.blogs_associated.append(new_blog)
-			else:
-				new_tag = Tag(name=tag)
-				new_tag.blogs_associated.append(new_blog)
-				db.session.add(new_tag)
+		if form.tags.data:
+			blog_tags = [x.strip() for x in form.tags.data.split(",")]
+			for tag in blog_tags:
+				present_tag = Tag.query.filter_by(name=tag).first()
+				if (present_tag):
+					present_tag.blogs_associated.append(new_blog)
+				else:
+					new_tag = Tag(name=tag)
+					new_tag.blogs_associated.append(new_blog)
+					db.session.add(new_tag)
 
 		db.session.add(new_blog)
 		db.session.commit()
 
-		return redirect('/index')
+		return redirect(url_for('index'))
 
 	return render_template('add_blog.html', title='add blog', form=form)
 
@@ -79,3 +83,14 @@ def delete_blog(id):
 	db.session.commit()
 
 	return jsonify({"Blog was deleted!"}), 200
+
+@flask_app.route('/admin_login', methods=["GET", "POST"])
+def admin_login():
+	form = LoginForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.username.data).first()
+		if user:
+			if check_password_hash(user.password, form.password.data):
+				login_user(user, remember=False)
+				return redirect(url_for('add_blog'))
+	return render_template('admin_login.html', title='Sign In', form=form)
