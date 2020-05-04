@@ -47,21 +47,18 @@ def add_blog():
 
 	return render_template('add_blog.html', title='add blog', form=form)
 
+
 @flask_app.route('/blogs', methods=["GET"])
-def blogs():
+def all_blogs():
 	blogs = Blog.query.all()
 	return render_template('blogs.html', title='All Blogs', blogs=blogs)
+
 
 @flask_app.route('/blog/<int:id>', methods=["GET"])
 def get_single_blog(id):
 	blog = Blog.query.filter_by(id=id).first()
-	serialized_blog = blog.serialize
-	serialized_blog["tags"] = []
+	return render_template('get_single_blog.html', title=blog.title, blog=blog)	
 
-	for tag in blog.tags:
-		serialized_blog["tags"].append(tag.serialize)
-
-	return jsonify({"single_blog": serialized_blog})
 
 @flask_app.route('/update_blog/<int:id>', methods=["PUT"])
 def update_blog(id):
@@ -77,6 +74,7 @@ def update_blog(id):
 	db.session.add()
 	return jsonify({"blog_id": blog.id})
 
+
 @flask_app.route('/delete_blog/<int:id>', methods=["DELETE"])
 def delete_blog(id):
 	blog = Blog.query.filter_by(id=id).first()
@@ -84,6 +82,7 @@ def delete_blog(id):
 	db.session.commit()
 
 	return jsonify({"Blog was deleted!"}), 200
+
 
 @flask_app.route('/admin_login', methods=["GET", "POST"])
 def admin_login():
