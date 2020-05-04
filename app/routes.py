@@ -56,7 +56,7 @@ def all_blogs():
 
 @flask_app.route('/blog/<int:id>', methods=["GET"])
 def get_single_blog(id):
-	blog = Blog.query.filter_by(id=id).first()
+	blog = Blog.query.filter_by(id=id).first_or_404()
 	return render_template('get_single_blog.html', title=blog.title, blog=blog)	
 
 
