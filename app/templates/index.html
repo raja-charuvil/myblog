@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h1>Welcome to Raja's blog!</h1>
-    {% for blog in blogs %}
-    <div>
+{% block app_content %}
+    <h1 style="text-align:center">Welcome to Raja's blog!</h1>
+<!--     {% for blog in blogs %}
        	<h3>{{ blog.title }}</h3>
         <p>{{ blog.content | safe}}</p>
         {% if blog.tags %}
@@ -13,12 +12,38 @@
         	{% endfor %}
         </p>
         {% endif %}
-    </div>
-    {% endfor %}
-    {% if prev_url %}
-    <a href="{{ prev_url }}">Newer blogs</a>
-    {% endif %}
-    {% if next_url %}
-    <a href="{{ next_url }}">Older blogs</a>
-    {% endif %}
+    {% endfor %} -->
+
+    <table class="table table-hover">
+        <td>
+            {% for blog in blogs %}
+            <tr>
+                <h3>{{ blog.title }}</h3>
+                <p>{{ blog.content | safe}}</p>
+                {% if blog.tags %}
+                <p>
+                    {% for tag in blog.tags %}
+                    <i>{{ tag.name }}</i>
+                    {% endfor %}
+                </p>
+                {% endif %}                
+            </tr>
+            {% endfor %}
+        </td>
+    </table>
+
+   <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer blogs
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older blogs <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
