@@ -15,4 +15,10 @@
         {% endif %}
     </div>
     {% endfor %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Newer blogs</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Older blogs</a>
+    {% endif %}
 {% endblock %}
