@@ -48,13 +48,9 @@ def add_blog():
 	return render_template('add_blog.html', title='add blog', form=form)
 
 @flask_app.route('/blogs', methods=["GET"])
-def get_all_blogs():
+def blogs():
 	blogs = Blog.query.all()
-	serialized_data = []
-	for blog in blogs:
-		serialized_data.append(blog.serialize)
-
-	return jsonify({"all_blogs": serialized_data})
+	return render_template('blogs.html', title='All Blogs', blogs=blogs)
 
 @flask_app.route('/blog/<int:id>', methods=["GET"])
 def get_single_blog(id):

@@ -12,3 +12,5 @@ class Config(object):
 
     ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'raja@email.com')
     ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'test')
+
+    POSTS_PER_PAGE = 3
