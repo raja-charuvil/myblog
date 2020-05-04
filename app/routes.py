@@ -15,6 +15,11 @@ def index():
 	return render_template('index.html', title='Home', blogs=blogs)
 
 
+@flask_app.route('/about_raja')
+def about_raja():
+	return render_template('about_raja.html', title='About Raja')
+
+
 @flask_app.route('/add_blog', methods=["GET", "POST"])
 @login_required
 def add_blog():
