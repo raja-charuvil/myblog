@@ -2,26 +2,29 @@
 
 {% block app_content %}
     <h1 style="text-align:center">Welcome to Raja's blog!</h1>
-<!--     {% for blog in blogs %}
-       	<h3>{{ blog.title }}</h3>
+    {% for blog in blogs %}
+       	<h2>{{ blog.title }}</h2>
+        <p><b>Created at: </b>{{ blog.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
         <p>{{ blog.content | safe}}</p>
         {% if blog.tags %}
-        <p>
+        <p><b>Tags: </b>
         	{% for tag in blog.tags %}
         	<i>{{ tag.name }}</i>
         	{% endfor %}
         </p>
         {% endif %}
-    {% endfor %} -->
+        <br>
+    {% endfor %}
 
-    <table class="table table-hover">
+<!--     <table class="table table-hover">
         <td>
             {% for blog in blogs %}
             <tr>
-                <h3>{{ blog.title }}</h3>
+                <h2>{{ blog.title }}</h2>
+                <p><b>Created at: {{ blog.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</b</p>
                 <p>{{ blog.content | safe}}</p>
                 {% if blog.tags %}
-                <p>
+                <p><b>Tags: </b>
                     {% for tag in blog.tags %}
                     <i>{{ tag.name }}</i>
                     {% endfor %}
@@ -30,7 +33,7 @@
             </tr>
             {% endfor %}
         </td>
-    </table>
+    </table> -->
 
    <nav aria-label="...">
         <ul class="pager">

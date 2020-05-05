@@ -3,10 +3,10 @@
 {% block app_content %}
 <div>
   <h2>{{ blog.title }}</h2>
-  <p><b>Created at: {{ blog.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</b></p>
+  <p><b>Created at: </b>{{ blog.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
   <p>{{ blog.content | safe }}</p>
   <br>
-  <p>
+  <p><b>Tags: </b>
     {% for tag in blog.tags %}
     <i>{{ tag.name }}</i>
     {% endfor %}
