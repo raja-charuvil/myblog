@@ -22,12 +22,12 @@ Installation [Windows]
 
 3. Create a virtual environment and install the required packages with the following commands:
 
-    $ virtualenv venv
-    $ venv\Scripts\activate
+    $ `virtualenv venv`  
+    $ `venv\Scripts\activate`
 
 4. Install dependencies
 
-    (venv) $ pip install -r requirements.txt
+    (venv) $ `pip install -r requirements.txt`
 
 Running the Examples
 --------------------
